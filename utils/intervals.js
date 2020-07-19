@@ -108,6 +108,13 @@ export const translateNumericalIntervalToNamedInterval = (numericalInterval) => 
   return INTERVAL_MAP[numericalInterval].names[0]
 }
 
+export const getQualityOfNumericInterval = (numericalInterval) => {
+  if (!INTERVAL_MAP[numericalInterval]) {
+    console.error(`${numericalInterval} is not defined`)
+  }
+  return INTERVAL_MAP[numericalInterval].symbols[0].split("")[0]
+}
+
 export const getDataForNumericalInterval = (numericalInterval) => {
   if (!INTERVAL_MAP[numericalInterval]) {
     console.error(`${JSON.stringify(numericalInterval)} is not defined`)
@@ -116,12 +123,13 @@ export const getDataForNumericalInterval = (numericalInterval) => {
 }
 
 export const translateSymbolsIntoNumbericalInterval = (symbol) => {
-  const intervalData = INTERVAL_MAP.filter(data => {
+  const intervalData = Object.entries(INTERVAL_MAP).filter(([key, { symbols }]) => {
     // todo handle cases with multiple symbols
-    return data.symbols[0] === symbol
+    return symbols[0] === symbol
   })
   if (intervalData.length < 1) {
-    console.error(`${symbol} is not in Interval Map`)
+    // console.error(`${symbol} is not in Interval Map`)
+    return symbol
   }
   return Object.keys(intervalData)[0]
 } 
