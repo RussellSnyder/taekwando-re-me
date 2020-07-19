@@ -1,29 +1,22 @@
 import React, { useState } from 'react'
-import { useSelector, useDispatch, unWrapResult } from 'react-redux';
-import { StyleSheet, View, TouchableOpacity } from 'react-native';
-import { Divider, Button, Text, ButtonGroup } from 'react-native-elements';
-import Slider from "react-native-slider";
+import { useSelector, useDispatch } from 'react-redux';
+import { StyleSheet, View } from 'react-native';
+import { Button, Text } from 'react-native-elements';
 import FaIcon from 'react-native-vector-icons/FontAwesome5';
 
 import {
   getDataForNumericalInterval,
-  translateSymbolsIntoNumbericalInterval,
-  translateNumericalIntervalToNamedInterval,
-  getQualityOfNumericInterval
 } from '../utils/intervals'
 
-import difficultyLevels from '../utils/difficulty-levels'
-import INSTRUMENTS from '../utils/intruments';
+import { decomposeIntervalData } from '../utils/difficulty-levels'
 import SCREENS from './screens'
 
-import {
-  playTwoNotesSequencially,
-  playTwoNotesTogether,
-} from '../utils/audio-player'
+import IntervalSizeSlider from '../components/IntervalSizeSlider'
+import IntervalQualityChooser from '../components/IntervalQualityChooser'
+import IntervalSizeChooser from '../components/IntervalSizeChooser'
 
 import {
   selectChallenge,
-  selectDojo,
   updateChallengeQuestion,
   updateChallenge,
 } from '../slices/DojoSlice'
@@ -32,12 +25,12 @@ import {
   playInterval,
 } from '../slices/AudioSlice'
 
-export default function DojoChallengeScreen({ route, navigation }) {
+const MAX_SIZE_OF_SIZE_CHOOSER = 8
+
+export default function DojoChallengeScreen({ navigation }) {
   const dispatch = useDispatch();
 
-  const { isPlaying: audioIsPlaying, isComplete: audioIsComplete, error: audioError } = useSelector(state => state.audio)
-
-  const { instrument } = useSelector(selectDojo);
+  const { isPlaying: audioIsPlaying, error: audioError } = useSelector(state => state.audio)
 
   const {
     currentQuestionIndex,
@@ -48,35 +41,30 @@ export default function DojoChallengeScreen({ route, navigation }) {
 
   const currentQuestion = questions[currentQuestionIndex]
 
-  const levelData = difficultyLevels[level];
-  const instrumentSoundData = INSTRUMENTS[instrument];
-
-  // just collect the size (P5 would be 5)
-  const pureIntervalSizes = levelData.intervals.map(interval => {
-    const symbol = translateNumericalIntervalToNamedInterval(interval)
-    return (symbol.match(/\d+$/) || []).pop()
-  })
-
-  const minimumIntervalSize = Math.min( ...pureIntervalSizes );
-  const maximumIntervalSize = Math.max( ...pureIntervalSizes );
+  const {
+    availableIntervalQualities,
+    availableIntervalSizes,
+    minimumIntervalSize,
+    maximumIntervalSize,
+  } = decomposeIntervalData(level)
 
   const [intervalSizeGuess, setIntervalSizeGuess] = useState(minimumIntervalSize)
+  const [intervalSizeIndexGuess, setIntervalSizeIndexGuess] = useState(0)
   const [intervalQualityIndexGuess, setIntervalQualIndexityGuess] = useState(0)
-
-  const intervalQualities = [...new Set(levelData.intervals.map(interval => {          
-    return getQualityOfNumericInterval(interval)
-  }))]
 
   const [feedback, setFeedback] = useState(null)  
   
   const isLastQuestion = currentQuestionIndex + 1 === Object.keys(questions).length
 
+  const isUsingIntervalSlider = availableIntervalSizes.length > MAX_SIZE_OF_SIZE_CHOOSER
+
+  const correctData = getDataForNumericalInterval(Math.abs(currentQuestion.interval))
+
+  const guessedIntervalSize = isUsingIntervalSlider ? intervalSizeGuess : availableIntervalSizes[intervalSizeIndexGuess]
+  const guessedIntervalQuality = availableIntervalQualities[intervalQualityIndexGuess]
+  const guessIntervalSymbol = `${guessedIntervalQuality}${guessedIntervalSize}`;
+
   const submitGuess = () => {
-    const correctData = getDataForNumericalInterval(currentQuestion.interval)
-
-    const guessIntervalSymbol = `${intervalQualities[intervalQualityIndexGuess]}${intervalSizeGuess}`;
-    // const guessIntervalNumber = translateSymbolsIntoNumbericalInterval(guessIntervalSymbol)
-
     const isCorrect = guessIntervalSymbol === correctData.symbols[0] 
     
     if (isCorrect) {
@@ -116,8 +104,7 @@ export default function DojoChallengeScreen({ route, navigation }) {
     try {
       await dispatch(playInterval({
         notes,
-        isSequence,
-        instrument: instrumentSoundData
+        isSequence
       }))
 
     } catch {
@@ -129,55 +116,6 @@ export default function DojoChallengeScreen({ route, navigation }) {
       playCount: currentQuestion.playCount + 1
     }))
   }
-
-  const IntervalSizeSlider = () => {
-    return <View style={styles.intervalSliderContainer}>
-      <Button
-        icon={<FaIcon name="minus" color="white" size={20} />}
-        onPress={() => {
-          if (intervalSizeGuess <= minimumIntervalSize) return
-          setIntervalSizeGuess(intervalSizeGuess - 1)
-        }}
-      />
-      <Slider
-        animateTransitions={true}
-        style={styles.intervalSlider}
-        step={1}
-        value={intervalSizeGuess}
-        minimumValue={minimumIntervalSize}
-        maximumValue={maximumIntervalSize}
-        onSlidingComplete={(newValue) => {
-          // if (intervalSizeGuess === newValue) return
-          setIntervalSizeGuess(newValue)
-        }}
-      />
-      <Button
-        icon={<FaIcon name="plus" color="white" size={20} />}
-        onPress={() => {
-          if (intervalSizeGuess >= maximumIntervalSize) return
-          setIntervalSizeGuess(intervalSizeGuess + 1)
-        }}
-      />
-    </View>
-  }
-
-  const IntervalQualityChooser = () => {
-    return <View>
-      <ButtonGroup
-        containerStyle={{
-          marginHorizontal: 0,
-          marginBottom: 30,
-        }}
-        buttons={intervalQualities}
-        selectedIndex={intervalQualityIndexGuess}
-        onPress={(newValue) => {
-          if (newValue === intervalQualityIndexGuess) return
-          setIntervalQualIndexityGuess(newValue)
-        }}
-      />
-    </View>
-  }
-
 
   return (
     <View style={styles.container}>
@@ -196,16 +134,34 @@ export default function DojoChallengeScreen({ route, navigation }) {
          />
       </View>
       <View style={styles.guessControlsContainer}>
-        <IntervalQualityChooser />
-        <IntervalSizeSlider />
+        <IntervalQualityChooser
+          availableIntervalQualities={availableIntervalQualities}
+          selectedIndex={intervalQualityIndexGuess}
+          handleChange={newValue => setIntervalQualIndexityGuess(newValue)}
+        />
+        {console.log(isUsingIntervalSlider)}
+        {isUsingIntervalSlider
+         ? <IntervalSizeSlider
+          value={intervalSizeGuess}
+          min={minimumIntervalSize}
+          max={maximumIntervalSize}
+          handleChange={(newValue) => setIntervalSizeGuess(newValue)}
+        />
+        : <IntervalSizeChooser
+          selectedIndex={intervalSizeIndexGuess}
+          handleChange={newValue => setIntervalSizeIndexGuess(newValue)}
+          availableIntervalSizes={availableIntervalSizes}
+        />}
       </View>
-      <Text h4 style={{ textAlign: 'center' }}>{intervalSizeGuess}</Text>
+      {isUsingIntervalSlider && (
+        <Text h4 style={{ textAlign: 'center' }}>{intervalSizeGuess}</Text>
+      )}
 
       <View style={styles.feedbackAndPlayCount}>
         {(currentQuestion.playCount > 0) && (
           <Text>Sound Played {currentQuestion.playCount} times</Text>
         )}
-        {(feedback && currentQuestion.playCount < 1) && (
+        {(feedback && !audioIsPlaying && currentQuestion.playCount < 1) && (
           <Text style={{ color: feedback.correct ? 'green' : 'red' }}>{feedback.text}</Text>
         )}
       </View>
@@ -242,18 +198,6 @@ const styles = StyleSheet.create({
   },
   playSequenceContainer: {
     marginBottom: 30
-  },
-  guessControlsContainer: {
-  },
-  intervalSliderContainer: {
-    flexDirection: 'row',
-  },
-  intervalSlider: {
-    flex: 1,
-    marginHorizontal: 15,
-  },
-  intervalButton: {
-    marginHorizontal: 20,
   },
   feedbackAndPlayCount: {
     height: 20

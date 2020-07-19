@@ -4,21 +4,28 @@ import difficultyLevels from '../utils/difficulty-levels'
 
 export const generateChallengeQuestions = (level, instrument) => {
   const levelData = difficultyLevels[level]
-  const { sequenceRate, numberOfQuestions } = levelData
+  const { numberOfQuestions } = levelData
 
   const questions = {};
 
   for (let i = 0; i < numberOfQuestions; i++) {
-    const { interval, notes } = pickTwoNotes(levelData);
-
-    questions[i] = {
-      interval,
-      notes,
-      isSequence: Math.random() < sequenceRate,
-      answeredCorrectly: null,
-      playCount: 0,
-    }
+    questions[i] = generateChallengeQuestion(level)
   }
 
   return questions
 }
+
+export const generateChallengeQuestion = (level, instrument) => {
+  const levelData = difficultyLevels[level]
+  const { sequenceRate } = levelData
+
+  const { interval, notes } = pickTwoNotes(levelData);
+
+  return {
+    interval,
+    notes,
+    isSequence: Math.random() < sequenceRate,
+    answeredCorrectly: null,
+    playCount: 0,
+  }
+};

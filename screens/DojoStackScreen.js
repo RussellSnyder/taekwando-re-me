@@ -2,6 +2,7 @@ import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import DojoHomeScreen from './DojoHomeScreen'
 import DojoFreePlayScreen from './DojoFreePlayScreen'
+import DojoTrainingsScreen from './DojoTrainingsScreen'
 import DojoTrainingScreen from './DojoTrainingScreen'
 import DojoChallengesScreen from './DojoChallengesScreen'
 import DojoChallengeScreen from './DojoChallengeScreen'
@@ -27,6 +28,10 @@ export default function DojoStackScreen() {
       <DojoStack.Screen
         name={SCREENS.DOJO_TRAINING}
         component={DojoTrainingScreen}
+      />
+      <DojoStack.Screen
+        name={SCREENS.DOJO_TRAININGS}
+        component={DojoTrainingsScreen}
       />
       <DojoStack.Screen
         name={SCREENS.DOJO_CHALLENGES}

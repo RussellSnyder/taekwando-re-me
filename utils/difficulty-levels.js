@@ -1,4 +1,5 @@
 import { range } from 'lodash'
+import { translateNumericalIntervalToNamedInterval } from './intervals'
 
 const COLORS = {
   WHITE: "#ffffff",
@@ -14,7 +15,7 @@ const COLORS = {
 }
 
 
-export default {
+const LEVEL_DATA = {
   1: {
     label: 'White Belt',
     backgroundColor: COLORS.WHITE,
@@ -22,7 +23,7 @@ export default {
     intervals: [3, 4, 7, 11],
     numberOfQuestions: 10,
     range: range(60, 75),
-    sequenceRate: 0, // Probability that a sequence will be played vs. two notes simultaneously
+    sequenceRate: 1, // Probability that a sequence will be played vs. two notes simultaneously
   },
   2: {
     label: 'Orange Belt',
@@ -105,4 +106,26 @@ export default {
     range: range(55, 93),
     sequenceRate: 0.7,
   },
+}
+
+export default LEVEL_DATA
+
+export const decomposeIntervalData = (level) => {
+  const dataSet = LEVEL_DATA[level].intervals.map(interval => {
+    const symbol = translateNumericalIntervalToNamedInterval(Math.abs(interval))
+    return {
+      quality: symbol.split("")[0],
+      size: (symbol.match(/\d+$/) || []).pop(),
+    }
+  })
+
+  const availableIntervalQualities = Array.from(new Set([...dataSet.map(data => data.quality)]));
+  const availableIntervalSizes = Array.from(new Set([...dataSet.map(data => parseInt(data.size) )]));
+
+  return ({
+    availableIntervalQualities,
+    availableIntervalSizes,
+    minimumIntervalSize: Math.min( ...availableIntervalSizes ),
+    maximumIntervalSize: Math.max( ...availableIntervalSizes ),
+  })
 }

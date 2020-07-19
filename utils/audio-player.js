@@ -3,7 +3,6 @@ import { Audio } from 'expo-av'
 export const playTwoNotesTogether = async ([firstNote, secondNote], instrumentSounds) => {
 	const firstNoteSoundObject = new Audio.Sound()
 	const secondNoteSoundObject = new Audio.Sound()
-console.log('yo')
   try {
     await firstNoteSoundObject.loadAsync(instrumentSounds[firstNote]);
     await secondNoteSoundObject.loadAsync(instrumentSounds[secondNote]);
@@ -12,7 +11,6 @@ console.log('yo')
     await secondNoteSoundObject.playAsync();    
   } catch (error) {
     reject(error)
-    console.log(error)
   }
   
   return new Promise((resolve, reject) => {
@@ -34,7 +32,6 @@ export const playTwoNotesSequencially =  async ([firstNote, secondNote], instrum
     await firstNoteSoundObject.playAsync();
 
   } catch (error) {
-    console.log(error)
     reject(error)
   }  
 

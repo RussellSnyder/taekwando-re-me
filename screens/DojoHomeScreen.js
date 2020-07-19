@@ -12,50 +12,43 @@ const dividerStyle = {
   marginBottom: 10
 };
 
+const DojoHomeButton = ({ iconName, title, onPress }) => (
+  <Button
+    icon={<FaIcon
+      name={iconName}
+      size={30}
+      style={styles.linkIcon}
+    />}
+    iconRight
+    buttonStyle={styles.button}
+    containerStyle={styles.buttonContainer}
+    type="outline"
+    title={title}
+    titleStyle={{
+      fontSize: 30
+    }}
+    onPress={onPress}
+  />
+)
 export default function DojoHomeScreen({ navigation }) {
   return (
     <View style={styles.container}>
       <View style={styles.navigationContainer}>
-        <Button
-          icon={<FaIcon
-            name="play"
-            size={30}
-            style={styles.linkIcon}
-          />}
-          iconRight
-          buttonStyle={styles.button}
-          containerStyle={styles.buttonContainer}
-          type="outline"
-          title="Free Play"
-          titleStyle={{
-            fontSize: 30
-          }}
+        <DojoHomeButton
+          title={"Free Play"}
+          iconName={"play"}
           onPress={() => navigation.navigate(SCREENS.DOJO_FREE_PLAY)}
         />
         <Divider style={dividerStyle} />
-        <Button
-          icon={<FaIcon name="dumbbell" size={30} style={styles.linkIcon}/>}
-          iconRight
-          buttonStyle={styles.button}
-          containerStyle={styles.buttonContainer}
-          type="outline"
-          title="Train"
-          titleStyle={{
-            fontSize: 30
-          }}
-          onPress={() => navigation.navigate(SCREENS.DOJO_TRAINING)}
+        <DojoHomeButton
+          title={"Train"}
+          iconName={"dumbbell"}
+          onPress={() => navigation.navigate(SCREENS.DOJO_TRAININGS)}
         />
         <Divider style={dividerStyle} />
-        <Button
-          icon={<FaIcon name="crown" size={30} style={styles.linkIcon}/>}
-          iconRight
-          buttonStyle={styles.button}
-          containerStyle={styles.buttonContainer}
-          type="outline"
-          title="Challenges"
-          titleStyle={{
-            fontSize: 30
-          }}
+        <DojoHomeButton
+          title={"Challenges"}
+          iconName={"crown"}
           onPress={() => navigation.navigate(SCREENS.DOJO_CHALLENGES)}
         />
       </View>

@@ -1,6 +1,6 @@
 const INTERVAL_MAP = {
   0: {
-    names: ['Perfect Unison'],
+    names: ['Perfect 1'],
     symbols: ['P0']
   },
   1: {
@@ -48,7 +48,7 @@ const INTERVAL_MAP = {
     symbols: ['M7']
   },
   12: {
-    names: ['Perfect Octave'],
+    names: ['Perfect 8'],
     symbols: ['P12']
   },
   13: {
@@ -96,7 +96,7 @@ const INTERVAL_MAP = {
     symbols: ['M14', 'M7']
   },
   24: {
-    names: ['Perfect Double Octave', 'Perfect Octave'],
+    names: ['Perfect 16', 'Perfect 8'],
     symbols: ['P15', 'P8']
   },
 }

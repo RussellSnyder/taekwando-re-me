@@ -1,19 +1,25 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { generateChallengeQuestions } from '../utils/quiz-data'
+import { generateChallengeQuestion, generateChallengeQuestions } from '../utils/quiz-data'
 import DIFFICULTY_LEVELS from '../utils/difficulty-levels'
 
 const dojoInitialState = {
-  instrument: "violin",
   level: 1,
   challenge: {},
+  training: {}
+}
+
+const trainingInitialState = {
+  level: 1,
+  question: {},
+  questionCount: 0,
+  questionsAnsweredCorrectly: 0,
 }
 
 export const challengeInitialState = {
   isComplete: false,
   currentQuestionIndex: 0,
   name: "name here",
-  instrument: "violin",
   level: 1,
   questions: generateChallengeQuestions(1, 'violin')
 }
@@ -24,32 +30,31 @@ export const dojoSlice = createSlice({
     ...dojoInitialState,
     challenge: {
       ...challengeInitialState
+    },
+    training: {
+      ...trainingInitialState
     }
   },
 
   reducers: {
     updateDojo(state, action) {
-      const { intrument, level } = action.payload
+      const { level } = action.payload
 
-      if (intrument !== undefined) {
-        state.intrument = intrument
-      }
       if (level !== undefined) {
         state.level = level
       }
     },
 
     createChallenge(state) {
-      const { instrument, level } = state;
+      const { level } = state;
 
       const levelData = DIFFICULTY_LEVELS[level];
 
       state.challenge = {
         ...challengeInitialState,
         level,
-        instrument,
         name: `${levelData.label} Challenge`,
-        questions: generateChallengeQuestions(level, instrument)
+        questions: generateChallengeQuestions(level)
       }
     },
 
@@ -76,6 +81,34 @@ export const dojoSlice = createSlice({
         question.playCount = playCount
       }
     },
+
+    createTraining(state, action) {
+      const { level } = action.payload;
+
+      state.training = {
+        ...trainingInitialState,
+        level,
+        question: generateChallengeQuestion(level),
+      }
+    },
+
+    updateTraining(state, action) {
+      const { questionCount, questionsAnsweredCorrectly } = action.payload;
+
+      if (questionCount !== undefined) {
+        state.training.questionCount = questionCount
+      }
+      if (questionsAnsweredCorrectly !== undefined) {
+        state.training.questionsAnsweredCorrectly = questionsAnsweredCorrectly
+      }
+    },
+
+    createNewTrainingQuestion(state) {
+      const { level } = state.training
+
+      state.training.question = generateChallengeQuestion(level)
+    },
+
   },
 });
 
@@ -84,9 +117,13 @@ export const {
   updateChallengeQuestion,
   updateChallenge,
   updateDojo,
+  createTraining,
+  updateTraining,
+  createNewTrainingQuestion,
 } = dojoSlice.actions;
 
 export const selectDojo = state => state.dojo;
 export const selectChallenge = (state) => selectDojo(state).challenge;
+export const selectTraining = (state) => selectDojo(state).training;
 
 export default dojoSlice.reducer;

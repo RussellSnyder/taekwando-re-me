@@ -6,15 +6,14 @@ import {
 } from '../utils/audio-player'
 
 import INTRUMENTS from '../utils/intruments'
-import { get } from 'lodash';
 
 // First, create the thunk
 export const playInterval = createAsyncThunk(
   'audio/playInterval',
-  async ({ notes, isSequence, instrument }, { getState }) => {
-    const { isPlaying, isComplete } = getState().audio
+  async ({ notes, isSequence }, { getState }) => {
+    const { instrument } = getState().audio
 
-    console.log(isSequence)
+    console.log(getState().audio)
     let response;
     if (isSequence) {
       response = await playTwoNotesSequencially(notes, instrument)
@@ -29,14 +28,21 @@ export const playInterval = createAsyncThunk(
 export const audioInitialState = {
   isPlaying: false,
   isComplete: false,
-  error: null
+  error: null,
+  instrument: INTRUMENTS.violin, 
 }
 
 export const audioSlice = createSlice({
   name: 'audio',
   initialState: audioInitialState,
 
-  reducers: {},
+  reducers: {
+    updateInstrument(state, action) {
+      const { intrument } = action.payload
+
+      state.instrument = INTRUMENTS[intrument]
+    }
+  },
   extraReducers: {
     [playInterval.pending]: (state, action) => {
       console.log('should be playing....')
@@ -59,6 +65,8 @@ export const audioSlice = createSlice({
     }
   }
 });
+
+export const selectInstrument = state => state.instrument;
 
 
 export default audioSlice.reducer;
