@@ -1,6 +1,6 @@
 import React from 'react';
 import RNPickerSelect from 'react-native-picker-select';
-import instruments from '../../utils/intruments'
+import instruments from '../../utils/instruments'
 
 const InstrumentChooser = ({ onValueChange }) => {
   const items = Object.keys(instruments).map(instrument => ({

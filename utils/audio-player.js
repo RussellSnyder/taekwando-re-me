@@ -26,7 +26,7 @@ export const playTwoNotesTogether = async ([firstNote, secondNote], instrumentSo
 export const playTwoNotesSequencially =  async ([firstNote, secondNote], instrumentSounds) => {
 	const firstNoteSoundObject = new Audio.Sound()
   const secondNoteSoundObject = new Audio.Sound()
- 
+
   try {
     await firstNoteSoundObject.loadAsync(instrumentSounds[firstNote]);
     await firstNoteSoundObject.playAsync();

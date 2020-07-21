@@ -1,8 +1,7 @@
 import React from 'react'
 import { View } from 'react-native';
 import { ButtonGroup } from 'react-native-elements';
-
-const orderOfQulities = ["m", "M", "D", "P", "A"]
+import { INTERVAL_QUALITIES } from '../utils/intervals'
 
 const IntervalQualityChooser = ({ availableIntervalQualities, selectedIndex, handleChange }) => (
   <View>
@@ -11,7 +10,10 @@ const IntervalQualityChooser = ({ availableIntervalQualities, selectedIndex, han
         marginHorizontal: 0,
         marginBottom: 45,
       }}
-      buttons={orderOfQulities.filter(quality => availableIntervalQualities.indexOf(quality) !== -1)}
+      buttons={availableIntervalQualities
+        ? INTERVAL_QUALITIES.filter(quality => availableIntervalQualities.indexOf(quality) !== -1)
+        : INTERVAL_QUALITIES
+      }
       selectedIndex={selectedIndex}
       onPress={(newValue) => {
         if (newValue === selectedIndex) return

@@ -14,7 +14,6 @@ const COLORS = {
   BLACK: "#000000",
 }
 
-
 const LEVEL_DATA = {
   1: {
     label: 'White Belt',
@@ -22,7 +21,7 @@ const LEVEL_DATA = {
     textColor: COLORS.BLACK,
     intervals: [3, 4, 7, 11],
     numberOfQuestions: 10,
-    range: range(60, 75),
+    rangeSize: 0.2, // 1 is widest range. Range will start from middle and go up and down
     sequenceRate: 1, // Probability that a sequence will be played vs. two notes simultaneously
   },
   2: {
@@ -31,7 +30,7 @@ const LEVEL_DATA = {
     textColor: COLORS.BLACK,
     intervals: [-7, -4, -3, -1, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
     numberOfQuestions: 10,
-    range: range(55, 75),
+    rangeSize: 0.5,
     sequenceRate: 0.8,
   },
   3: {
@@ -40,7 +39,7 @@ const LEVEL_DATA = {
     textColor: COLORS.BLACK,
     intervals: range(-15, 15),
     numberOfQuestions: 10,
-    range: range(55, 93),
+    rangeSize: 0.5,
     sequenceRate: 0.7,
   },
   4: {
@@ -49,7 +48,7 @@ const LEVEL_DATA = {
     textColor: COLORS.BLACK,
     intervals: range(-15, 15),
     numberOfQuestions: 10,
-    range: range(55, 93),
+    rangeSize: 0.5,
     sequenceRate: 0.7,
   },
   5: {
@@ -58,7 +57,7 @@ const LEVEL_DATA = {
     textColor: COLORS.WHITE,
     intervals: range(-15, 15),
     numberOfQuestions: 10,
-    range: range(55, 93),
+    rangeSize: 0.5,
     sequenceRate: 0.7,
   },
   6: {
@@ -67,7 +66,7 @@ const LEVEL_DATA = {
     textColor: COLORS.WHITE,
     intervals: range(-15, 15),
     numberOfQuestions: 10,
-    range: range(55, 93),
+    rangeSize: 0.5,
     sequenceRate: 0.7,
   },
   7: {
@@ -76,7 +75,7 @@ const LEVEL_DATA = {
     textColor: COLORS.WHITE,
     intervals: range(-15, 15),
     numberOfQuestions: 10,
-    range: range(55, 93),
+    rangeSize: 0.5,
     sequenceRate: 0.7,
   },
   8: {
@@ -85,7 +84,7 @@ const LEVEL_DATA = {
     textColor: COLORS.WHITE,
     intervals: range(-15, 15),
     numberOfQuestions: 10,
-    range: range(55, 93),
+    rangeSize: 0.5,
     sequenceRate: 0.7,
   },
   9: {
@@ -94,7 +93,7 @@ const LEVEL_DATA = {
     textColor: COLORS.WHITE,
     intervals: range(-15, 15),
     numberOfQuestions: 10,
-    range: range(55, 93),
+    rangeSize: 0.5,
     sequenceRate: 0.7,
   },
   10: {
@@ -103,7 +102,7 @@ const LEVEL_DATA = {
     textColor: COLORS.WHITE,
     intervals: range(-15, 15),
     numberOfQuestions: 10,
-    range: range(55, 93),
+    rangeSize: 0.5,
     sequenceRate: 0.7,
   },
 }

@@ -47,6 +47,7 @@ export default function DojoTrainingScreen({ navigation }) {
   } = decomposeIntervalData(level)
 
   const [intervalSizeGuess, setIntervalSizeGuess] = useState(minimumIntervalSize)
+  const [intervalSizeGuessDisplay, setIntervalSizeGuessDisplay] = useState(minimumIntervalSize)
   const [intervalSizeIndexGuess, setIntervalSizeIndexGuess] = useState(0)
   const [intervalQualityIndexGuess, setIntervalQualIndexityGuess] = useState(0)
   const [hasAudioBeenPlayed, setHasAudioBeenPlayed] = useState(false)
@@ -131,7 +132,11 @@ export default function DojoTrainingScreen({ navigation }) {
           value={intervalSizeGuess}
           min={minimumIntervalSize}
           max={maximumIntervalSize}
-          handleChange={(newValue) => setIntervalSizeGuess(newValue)}
+          handleDisplayChange={(newValue) => setIntervalSizeGuessDisplay(newValue)}
+          handleValueChange={(newValue) => {
+            setIntervalSizeGuess(newValue)
+            setIntervalSizeGuessDisplay(newValue)
+          }}
         />
         : <IntervalSizeChooser
           selectedIndex={intervalSizeIndexGuess}
@@ -140,7 +145,7 @@ export default function DojoTrainingScreen({ navigation }) {
         />}
       </View>
       {isUsingIntervalSlider && (
-        <Text h4 style={{ textAlign: 'center' }}>{intervalSizeGuess}</Text>
+        <Text h4 style={{ textAlign: 'center' }}>{intervalSizeGuessDisplay}</Text>
       )}
 
       <View style={styles.feedbackAndPlayCount}>

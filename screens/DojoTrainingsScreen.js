@@ -17,7 +17,7 @@ export default function DojoTrainingsScreen({ navigation }) {
   return (
     <View style={styles.container}>
       <View style={styles.levelContainer}>
-        {Object.entries(LEVELS).map(([key, {label, backgroundColor, textColor }]) => {
+        {Object.entries(LEVELS).map(([level, {label, backgroundColor, textColor }]) => {
           return <Button
             key={label}
             title={label}
@@ -31,7 +31,7 @@ export default function DojoTrainingsScreen({ navigation }) {
             }}
             onPress={() => {
               dispatch(createTraining({
-                level: 1,
+                level,
               }))              
               navigation.navigate(SCREENS.DOJO_TRAINING)
             }}

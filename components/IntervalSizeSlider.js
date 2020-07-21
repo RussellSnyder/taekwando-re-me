@@ -4,13 +4,13 @@ import { View } from 'react-native';
 import { Button } from 'react-native-elements';
 import FaIcon from 'react-native-vector-icons/FontAwesome5';
 
-const IntervalSlider = ({ value, min, max, handleChange }) => {
+const IntervalSlider = ({ value, min, max, handleValueChange, handleDisplayChange }) => {
   return <View style={{ flexDirection: 'row' }}>
   <Button
     icon={<FaIcon name="minus" color="white" size={20} />}
     onPress={() => {
       if (value <= min) return
-      handleChange(value - 1)
+      handleValueChange(value - 1)
     }}
   />
   <Slider
@@ -23,15 +23,18 @@ const IntervalSlider = ({ value, min, max, handleChange }) => {
     value={value}
     minimumValue={min}
     maximumValue={max}
+    onValueChange={(newValue) => {
+      handleDisplayChange(newValue)
+    }}
     onSlidingComplete={(newValue) => {
-      handleChange(newValue)
+      handleValueChange(newValue)
     }}
   />
   <Button
     icon={<FaIcon name="plus" color="white" size={20} />}
     onPress={() => {
       if (value >= max) return
-      handleChange(value + 1)
+      handleValueChange(value + 1)
     }}
   />
 </View>

@@ -5,20 +5,19 @@ import {
   playTwoNotesSequencially,
 } from '../utils/audio-player'
 
-import INTRUMENTS from '../utils/intruments'
+import INSTRUMENTS from '../utils/instruments'
 
 // First, create the thunk
 export const playInterval = createAsyncThunk(
   'audio/playInterval',
   async ({ notes, isSequence }, { getState }) => {
-    const { instrument } = getState().audio
+    const { instrumentSounds } = getState().audio
 
-    console.log(getState().audio)
     let response;
     if (isSequence) {
-      response = await playTwoNotesSequencially(notes, instrument)
+      response = await playTwoNotesSequencially(notes, instrumentSounds)
     } else {
-      response = await playTwoNotesTogether(notes, instrument)
+      response = await playTwoNotesTogether(notes, instrumentSounds)
     }
 
     return response
@@ -29,7 +28,8 @@ export const audioInitialState = {
   isPlaying: false,
   isComplete: false,
   error: null,
-  instrument: INTRUMENTS.violin, 
+  instrumentName: 'violin', 
+  instrumentSounds: INSTRUMENTS.violin, 
 }
 
 export const audioSlice = createSlice({
@@ -38,21 +38,20 @@ export const audioSlice = createSlice({
 
   reducers: {
     updateInstrument(state, action) {
-      const { intrument } = action.payload
+      const { instrument } = action.payload
 
-      state.instrument = INTRUMENTS[intrument]
+      state.instrumentName = instrument
+      state.instrumentSounds = INSTRUMENTS[instrument]
     }
   },
   extraReducers: {
     [playInterval.pending]: (state, action) => {
-      console.log('should be playing....')
       if (!state.isPlaying) {
         state.isPlaying = true
         state.isComplete = false
       }
     },
     [playInterval.fulfilled]: (state, action) => {
-      console.log('now its done')
       state.isComplete = true
       state.isPlaying = false
       state.error = null
@@ -66,7 +65,11 @@ export const audioSlice = createSlice({
   }
 });
 
-export const selectInstrument = state => state.instrument;
+export const {
+  updateInstrument,
+} = audioSlice.actions;
 
+export const selectInstrumentSounds = state => state.audio.instrumentSounds;
+export const selectInstrumentName = state => state.audio.instrumentName;
 
 export default audioSlice.reducer;

@@ -11,7 +11,7 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import DojoStackScreen from './screens/DojoStackScreen'
 import ProfileStackScreen from './screens/ProfileStackScreen'
 import { store, persistor } from './store'
-
+import SCREENS from './screens/screens'
 
 export default function App() {
   const Tab = createBottomTabNavigator();
@@ -21,7 +21,7 @@ export default function App() {
       <PersistGate loading={null} persistor={persistor}>
         <NavigationContainer>
           <Tab.Navigator
-            initialRouteName="Dojo"
+            // initialRouteName={SCREENS.PROFILE}
             screenOptions={({ route }) => ({
               tabBarIcon: ({ focused, color, size }) => {
                 let iconName;

@@ -3,12 +3,15 @@ import { createStackNavigator, TransitionSpecs } from '@react-navigation/stack';
 import ProfileScreen from './ProfileHomeScreen'
 import SettingsScreen from './SettingsScreen'
 import SettingsButton from '../components/SettingsButton'
+import SCREENS from './screens';
 
 const ProfileStack = createStackNavigator();
   
 export default function ProfileStackScreen() {
   return (
-    <ProfileStack.Navigator>
+    <ProfileStack.Navigator
+      initialRouteName={SCREENS.SETTINGS}
+    >
       <ProfileStack.Screen
         name="Profile"
         component={ProfileScreen}

@@ -1,7 +1,15 @@
+export const POSSIBLE_SIZES_FOR_QUALITY_MAP = {
+  m: [2, 3, 6, 9, 10, 13],
+  M: [2, 3, 6, 9, 10, 13],
+  P: [1, 4, 5, 8, 11, 12, 15],
+  D: [5, 12],
+  A: [4, 5, 11, 12],
+}
+
 const INTERVAL_MAP = {
   0: {
     names: ['Perfect 1'],
-    symbols: ['P0']
+    symbols: ['P1']
   },
   1: {
     names: ['minor 2'],
@@ -49,7 +57,7 @@ const INTERVAL_MAP = {
   },
   12: {
     names: ['Perfect 8'],
-    symbols: ['P12']
+    symbols: ['P8']
   },
   13: {
     names: ['minor 9', 'minor 2'],
@@ -96,10 +104,12 @@ const INTERVAL_MAP = {
     symbols: ['M14', 'M7']
   },
   24: {
-    names: ['Perfect 16', 'Perfect 8'],
+    names: ['Perfect 15', 'Perfect 8'],
     symbols: ['P15', 'P8']
   },
 }
+
+export const INTERVAL_QUALITIES = ["m", "M", "D", "P", "A"];
 
 export const translateNumericalIntervalToNamedInterval = (numericalInterval) => {
   if (!INTERVAL_MAP[numericalInterval]) {
@@ -124,12 +134,13 @@ export const getDataForNumericalInterval = (numericalInterval) => {
 
 export const translateSymbolsIntoNumbericalInterval = (symbol) => {
   const intervalData = Object.entries(INTERVAL_MAP).filter(([key, { symbols }]) => {
-    // todo handle cases with multiple symbols
-    return symbols[0] === symbol
+    return symbols[0] === symbol || symbols.includes(symbol)
   })
+  console.log(intervalData)
   if (intervalData.length < 1) {
-    // console.error(`${symbol} is not in Interval Map`)
-    return symbol
+    console.error(`${symbol} is not in Interval Map`)
+    return false
   }
-  return Object.keys(intervalData)[0]
+  // console.log(intervalData)
+  return intervalData[0][0]
 } 

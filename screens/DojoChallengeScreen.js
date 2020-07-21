@@ -139,7 +139,6 @@ export default function DojoChallengeScreen({ navigation }) {
           selectedIndex={intervalQualityIndexGuess}
           handleChange={newValue => setIntervalQualIndexityGuess(newValue)}
         />
-        {console.log(isUsingIntervalSlider)}
         {isUsingIntervalSlider
          ? <IntervalSizeSlider
           value={intervalSizeGuess}
