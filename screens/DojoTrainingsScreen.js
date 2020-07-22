@@ -9,10 +9,16 @@ import {
   createTraining,
 } from '../slices/DojoSlice'
 
+import {
+  selectInstrumentName,
+} from '../slices/AudioSlice'
+
 import SCREENS from './screens'
 
 export default function DojoTrainingsScreen({ navigation }) {
   const dispatch = useDispatch();
+
+  const instrument = useSelector(selectInstrumentName)
 
   return (
     <View style={styles.container}>
@@ -32,6 +38,7 @@ export default function DojoTrainingsScreen({ navigation }) {
             onPress={() => {
               dispatch(createTraining({
                 level,
+                instrument,
               }))              
               navigation.navigate(SCREENS.DOJO_TRAINING)
             }}

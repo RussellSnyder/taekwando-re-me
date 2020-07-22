@@ -83,12 +83,12 @@ export const dojoSlice = createSlice({
     },
 
     createTraining(state, action) {
-      const { level } = action.payload;
+      const { level, instrument } = action.payload;
 
       state.training = {
         ...trainingInitialState,
         level,
-        question: generateChallengeQuestion(level),
+        question: generateChallengeQuestion(level, instrument),
       }
     },
 
@@ -103,10 +103,11 @@ export const dojoSlice = createSlice({
       }
     },
 
-    createNewTrainingQuestion(state) {
+    createNewTrainingQuestion(state, action) {
+      const { instrument } = action.payload
       const { level } = state.training
 
-      state.training.question = generateChallengeQuestion(level)
+      state.training.question = generateChallengeQuestion(level, instrument)
     },
 
   },

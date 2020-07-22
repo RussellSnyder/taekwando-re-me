@@ -22,6 +22,7 @@ import {
 
 import {
   playInterval,
+  selectInstrumentName,
 } from '../slices/AudioSlice'
 
 const MAX_SIZE_OF_SIZE_CHOOSER = 5
@@ -30,6 +31,7 @@ export default function DojoTrainingScreen({ navigation }) {
   const dispatch = useDispatch();
 
   const { isPlaying: audioIsPlaying, error: audioError } = useSelector(state => state.audio)
+  const instrument = useSelector(selectInstrumentName)
 
   const {
     level,
@@ -82,13 +84,15 @@ export default function DojoTrainingScreen({ navigation }) {
       questionsAnsweredCorrectly: isCorrect ? questionsAnsweredCorrectly + 1 : questionsAnsweredCorrectly
     }))
 
-    dispatch(createNewTrainingQuestion())
+    dispatch(createNewTrainingQuestion({instrument}))
     setHasAudioBeenPlayed(false)
   }
   
   const handlePlaySequence = async () => {
+    // console.log(question)
     const { isSequence, notes } = question;
 
+    // console.log(isSequence, notes)
     setFeedback(null)
 
     try {
@@ -103,6 +107,7 @@ export default function DojoTrainingScreen({ navigation }) {
     setHasAudioBeenPlayed(true)
   }
 
+  // TODO allow user to reset score
   const score = Math.round((questionsAnsweredCorrectly / questionCount) * 100);
 
   return (
@@ -149,10 +154,25 @@ export default function DojoTrainingScreen({ navigation }) {
       )}
 
       <View style={styles.feedbackAndPlayCount}>
-      {questionCount > 0 && <Text>Reps: {questionCount}, Score: %{score}</Text>}
-      {(feedback && !audioIsPlaying) && (
-        <Text style={{ color: feedback.correct ? 'green' : 'red' }}>{feedback.text}</Text>
-      )}
+        <View style={styles.stats}>
+          {questionCount > 0 && <Text>Interval Count: {questionCount}, Score: %{score}</Text>}
+          {(feedback && !audioIsPlaying) && (
+            <Text style={{ color: feedback.correct ? 'green' : 'red' }}>{feedback.text}</Text>
+          )}
+        </View>
+        {questionCount > 0 && <View style={styles.clearStats}>
+          <Button
+            type="clear"
+            title="reset"
+            onPress={() => {
+              dispatch(updateTraining({
+                questionCount: 0,
+                questionsAnsweredCorrectly: 0,
+              }))
+              setFeedback(null)
+            }}
+          />
+        </View>}
       </View>
       <Button
         onPress={() => submitGuess()}
@@ -185,6 +205,15 @@ const styles = StyleSheet.create({
     marginBottom: 30
   },
   feedbackAndPlayCount: {
-    height: 20
-  }
+    height: 25,
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between'
+  },
+  stats: {
+
+  },
+  clearStats: {
+
+  },
 });

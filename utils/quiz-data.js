@@ -16,11 +16,13 @@ export const generateChallengeQuestions = (level, instrument = INSTRUMENTS['viol
   return questions
 }
 
-export const generateChallengeQuestion = (level, instrument) => {
+export const generateChallengeQuestion = (level, instrument = "violin") => {
   const levelData = difficultyLevels[level]
   const { sequenceRate } = levelData
+  
+  const { interval, notes } = pickTwoNotes(levelData, INSTRUMENTS[instrument]);
 
-  const { interval, notes } = pickTwoNotes(levelData);
+  // console.log(interval, notes)
 
   return {
     interval,

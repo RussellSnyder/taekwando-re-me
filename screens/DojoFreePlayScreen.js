@@ -69,12 +69,12 @@ export default function DojoFreePlayScreen({ navigation }) {
   
 
   const handlePlayNewInterval = async () => {
-    console.log(`${intervalQuality}${availableIntervalSizes[intervalSizeIndex]}`)
+    // console.log(`${intervalQuality}${availableIntervalSizes[intervalSizeIndex]}`)
     const pureInterval = translateSymbolsIntoNumbericalInterval(`${intervalQuality}${availableIntervalSizes[intervalSizeIndex]}`)
 
     let intervalWithDirection = pureInterval * (intervalDirectionIndex === 0 ? 1 : -1)
     const { notes } = pickTwoNotes(freePlayData, instrument, intervalWithDirection)
-    console.log(notes)
+    // console.log(notes)
 
     setLastIntervalPlayed(interval)
     

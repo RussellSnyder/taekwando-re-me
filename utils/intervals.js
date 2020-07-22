@@ -136,7 +136,7 @@ export const translateSymbolsIntoNumbericalInterval = (symbol) => {
   const intervalData = Object.entries(INTERVAL_MAP).filter(([key, { symbols }]) => {
     return symbols[0] === symbol || symbols.includes(symbol)
   })
-  console.log(intervalData)
+  // console.log(intervalData)
   if (intervalData.length < 1) {
     console.error(`${symbol} is not in Interval Map`)
     return false
