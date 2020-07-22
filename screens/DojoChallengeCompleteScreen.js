@@ -19,6 +19,16 @@ import {
   selectInstrumentName
 } from '../slices/AudioSlice'
 
+import {
+  updateAcheivedLevel,
+  selectProfile,
+} from '../slices/ProfileSlice'
+
+import {
+  updateOverLay,
+} from '../slices/UISlice'
+import LEVEL_DATA from '../utils/difficulty-levels';
+
 export default function DojoChallengeCompleteScreen({ navigation }) {
   const dispatch = useDispatch();
 
@@ -31,6 +41,7 @@ export default function DojoChallengeCompleteScreen({ navigation }) {
   })
 
   const instrument = useSelector(selectInstrumentName)
+  const { achievedLevel } = useSelector(selectProfile)
 
   const {
     level,
@@ -44,6 +55,21 @@ export default function DojoChallengeCompleteScreen({ navigation }) {
   }, 0) / questionCount
 
   const hasPassedChallenge = score === 1;
+
+
+  if (hasPassedChallenge && level > achievedLevel) {
+    console.log('yup', level)
+    dispatch(updateAcheivedLevel({
+      level
+    }))
+    if (level < Object.keys(LEVEL_DATA).length) {
+      setTimeout(() => {
+        dispatch(updateOverLay({
+          message: `You unlocked the ${LEVEL_DATA[parseInt(level) + 1].label} Challenge!`
+        }))
+      }, 1500)
+    }
+  }
 
   const resultMessage = hasPassedChallenge
     ? <Text h4 style={{ textAlign: 'center' }}>{name}</Text>
@@ -63,7 +89,7 @@ export default function DojoChallengeCompleteScreen({ navigation }) {
         <Text>{answeredCorrectly ? 'Yup' : 'Nope'}</Text>
       </View>
       <View style={styles.col}>
-        <Text>{translateNumericalIntervalToNamedInterval(interval)}</Text>
+        <Text>{translateNumericalIntervalToNamedInterval(Math.abs(interval))}</Text>
       </View>
       <View style={styles.col}>
         <Text>{isSquence ? 'Sequence' : 'Chord'}</Text>

@@ -27,13 +27,11 @@ export const profileSlice = createSlice({
   },
 
   reducers: {
-    updateAcheivedLevel(state, payload) {
-      const { level } = payload;
+    updateAcheivedLevel(state, action) {
+      const { level } = action.payload;
 
-      // you can't go down in level but you can skip a level (maybe)
-      if (level > state.achievedLevel) {
-        state.achievedLevel = level      
-      }
+      console.log(level)
+      state.achievedLevel = parseInt(level)      
       checkIfNewBadgeUnlocked(state)
     },
 

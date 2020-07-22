@@ -29,10 +29,10 @@ export default function App() {
 
                 if (route.name === 'Dojo') {
                   iconName = focused
-                    ? 'ios-information-circle'
-                    : 'ios-information-circle-outline';
+                    ? 'ios-musical-notes'
+                    : 'ios-musical-notes';
                 } else if (route.name === 'Profile') {
-                  iconName = focused ? 'ios-list-box' : 'ios-list';
+                  iconName = focused ? 'ios-contact' : 'ios-contact';
                 }
 
                 return <Ionicons name={iconName} size={size} color={color} />;

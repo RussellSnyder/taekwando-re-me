@@ -1,15 +1,11 @@
 import React from 'react';
 
 import {
-  StyleSheet,
   View,
-  TouchableOpacity,
-  Dimensions,
-  Platform,
   TouchableWithoutFeedback,
 } from 'react-native';
 
-import { ButtonGroup, Text, Button } from 'react-native-elements'
+import { Text, Button } from 'react-native-elements'
 
 import {
   selectOverlay,
