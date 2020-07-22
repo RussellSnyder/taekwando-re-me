@@ -20,7 +20,7 @@ const LEVEL_DATA = {
     backgroundColor: COLORS.WHITE,
     textColor: COLORS.BLACK,
     intervals: [3, 4, 7],
-    numberOfQuestions: 10,
+    numberOfQuestions: 2,
     rangeSize: 0.5, // 1 is widest range. Range will start from middle and go up and down. must be at least .5 is only 35 sounds files (trombone)
     sequenceRate: 1, // Probability that a sequence will be played vs. two notes simultaneously
   },
@@ -110,7 +110,9 @@ const LEVEL_DATA = {
 export default LEVEL_DATA
 
 export const decomposeIntervalData = (level) => {
-  const dataSet = LEVEL_DATA[level].intervals.map(interval => {
+  const { intervals, numberOfQuestions } = LEVEL_DATA[level]
+
+  const dataSet = intervals.map(interval => {
     const symbol = translateNumericalIntervalToNamedInterval(Math.abs(interval))
     return {
       quality: symbol.split("")[0],
@@ -126,5 +128,6 @@ export const decomposeIntervalData = (level) => {
     availableIntervalSizes,
     minimumIntervalSize: Math.min( ...availableIntervalSizes ),
     maximumIntervalSize: Math.max( ...availableIntervalSizes ),
+    numberOfQuestions,
   })
 }

@@ -14,10 +14,12 @@ import { AsyncStorage } from 'react-native'
 
 import dojoReducer from './slices/DojoSlice';
 import audioReducer from './slices/AudioSlice';
+import profileReducer from './slices/ProfileSlice';
 
 const rootReducer = combineReducers({
   dojo: dojoReducer,
   audio: audioReducer,
+  profile: profileReducer,
 })
 
 const persistConfig = {
@@ -36,18 +38,6 @@ const store = configureStore({
     }
   })
 });
-
-
-// console.log(store.getState())
-
-
-// const store = configureStore({
-//   reducer: {
-//     dojo: dojoReducer,
-//   },
-//   preloadedState: load(persistOptions),
-//   middleware: [save(persistOptions), ...getDefaultMiddleware()]
-// });
 
 let persistor = persistStore(store);
 

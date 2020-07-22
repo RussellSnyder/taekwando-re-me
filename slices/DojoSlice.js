@@ -45,8 +45,9 @@ export const dojoSlice = createSlice({
       }
     },
 
-    createChallenge(state) {
+    createChallenge(state, action) {
       const { level } = state;
+      const { instrument } = action.payload;
 
       const levelData = DIFFICULTY_LEVELS[level];
 
@@ -54,7 +55,7 @@ export const dojoSlice = createSlice({
         ...challengeInitialState,
         level,
         name: `${levelData.label} Challenge`,
-        questions: generateChallengeQuestions(level)
+        questions: generateChallengeQuestions(level, instrument)
       }
     },
 

@@ -3,14 +3,15 @@ import { pickTwoNotes } from './note-picker';
 import difficultyLevels from '../utils/difficulty-levels'
 import INSTRUMENTS from '../utils/instruments'
 
-export const generateChallengeQuestions = (level, instrument = INSTRUMENTS['violin']) => {
+export const generateChallengeQuestions = (level, instrument = 'violin') => {
   const levelData = difficultyLevels[level]
+
   const { numberOfQuestions } = levelData
 
   const questions = {};
 
   for (let i = 0; i < numberOfQuestions; i++) {
-    questions[i] = generateChallengeQuestion(level)
+    questions[i] = generateChallengeQuestion(level, instrument)
   }
 
   return questions

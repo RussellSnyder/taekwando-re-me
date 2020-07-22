@@ -10,10 +10,16 @@ import {
   createChallenge,
 } from '../slices/DojoSlice'
 
+import {
+  selectInstrumentName,
+} from '../slices/AudioSlice'
+
 import SCREENS from './screens'
 
 export default function DojoChallengeScreen({ navigation }) {
   const dispatch = useDispatch();
+
+  const instrument = useSelector(selectInstrumentName)
 
   return (
     <View style={styles.container}>
@@ -32,7 +38,7 @@ export default function DojoChallengeScreen({ navigation }) {
             }}
             onPress={() => {
               dispatch(updateDojo({ level: key }))
-              dispatch(createChallenge())              
+              dispatch(createChallenge({instrument}))
               navigation.navigate(SCREENS.DOJO_CHALLENGE)
             }}
           />

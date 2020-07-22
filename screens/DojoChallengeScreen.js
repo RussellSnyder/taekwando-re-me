@@ -10,6 +10,7 @@ import {
 
 import { decomposeIntervalData } from '../utils/difficulty-levels'
 import SCREENS from './screens'
+import LEVELS from '../utils/difficulty-levels'
 
 import IntervalSizeSlider from '../components/IntervalSizeSlider'
 import IntervalQualityChooser from '../components/IntervalQualityChooser'
@@ -22,12 +23,12 @@ import {
 } from '../slices/DojoSlice'
 
 import {
-  playInterval,
+  playInterval
 } from '../slices/AudioSlice'
 
 const MAX_SIZE_OF_SIZE_CHOOSER = 8
 
-export default function DojoChallengeScreen({ navigation }) {
+const DojoChallengeScreen = ({ navigation }) => {
   const dispatch = useDispatch();
 
   const { isPlaying: audioIsPlaying, error: audioError } = useSelector(state => state.audio)
@@ -39,6 +40,18 @@ export default function DojoChallengeScreen({ navigation }) {
     questions,
   } = useSelector(selectChallenge);
 
+
+  navigation.setOptions({
+    title: name,
+    headerStyle: {
+      backgroundColor: LEVELS[level].backgroundColor,
+    },
+    headerTintColor: LEVELS[level].textColor, 
+    headerTitleStyle: {
+      color: LEVELS[level].textColor,
+    },
+  })
+
   const currentQuestion = questions[currentQuestionIndex]
 
   const {
@@ -46,10 +59,12 @@ export default function DojoChallengeScreen({ navigation }) {
     availableIntervalSizes,
     minimumIntervalSize,
     maximumIntervalSize,
+    numberOfQuestions,
   } = decomposeIntervalData(level)
 
   const [intervalSizeGuess, setIntervalSizeGuess] = useState(minimumIntervalSize)
   const [intervalSizeIndexGuess, setIntervalSizeIndexGuess] = useState(0)
+  const [intervalSizeGuessDisplay, setIntervalSizeGuessDisplay] = useState(1)
   const [intervalQualityIndexGuess, setIntervalQualIndexityGuess] = useState(0)
 
   const [feedback, setFeedback] = useState(null)  
@@ -89,7 +104,8 @@ export default function DojoChallengeScreen({ navigation }) {
         isComplete: true,
       }))
 
-      navigation.replace(SCREENS.DOJO_CHALLENGE_COMPLETE)
+      setFeedback(null)
+      navigation.navigate(SCREENS.DOJO_CHALLENGE_COMPLETE)
 
     } else {
       dispatch(updateChallenge({
@@ -119,7 +135,6 @@ export default function DojoChallengeScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <Text h3 style={styles.challengeName}>{name}</Text>
       <View style={styles.playSequenceContainer}>
         <Button
           titleStyle={{ fontSize: 30 }}
@@ -144,7 +159,8 @@ export default function DojoChallengeScreen({ navigation }) {
           value={intervalSizeGuess}
           min={minimumIntervalSize}
           max={maximumIntervalSize}
-          handleChange={(newValue) => setIntervalSizeGuess(newValue)}
+          handleValueChange={(newValue) => setIntervalSizeGuess(newValue)}
+          handleDisplayChange={(newValue) => setIntervalSizeGuessDisplay(newValue)}
         />
         : <IntervalSizeChooser
           selectedIndex={intervalSizeIndexGuess}
@@ -153,7 +169,7 @@ export default function DojoChallengeScreen({ navigation }) {
         />}
       </View>
       {isUsingIntervalSlider && (
-        <Text h4 style={{ textAlign: 'center' }}>{intervalSizeGuess}</Text>
+        <Text h4 style={{ textAlign: 'center' }}>{intervalSizeGuessDisplay}</Text>
       )}
 
       <View style={styles.feedbackAndPlayCount}>
@@ -169,7 +185,7 @@ export default function DojoChallengeScreen({ navigation }) {
         buttonStyle={isLastQuestion && { backgroundColor: 'green'}}
         title={isLastQuestion
           ? `Submit Final Question`
-          : `Submit Question ${currentQuestionIndex + 1}`
+          : `Submit Question ${currentQuestionIndex + 1}/${numberOfQuestions}`
         }
         disabled={currentQuestion.playCount < 1}
       />
@@ -196,9 +212,22 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between'
   },
   playSequenceContainer: {
-    marginBottom: 30
+    marginVertical: 30
   },
   feedbackAndPlayCount: {
     height: 20
   }
 });
+
+DojoChallengeScreen.options = {
+  topBar: {
+    title: {
+      text: 'Home',
+      color: 'white'
+    },
+    background: {
+      color: '#4d089a'
+    }
+  }
+}
+export default DojoChallengeScreen

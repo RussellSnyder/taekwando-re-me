@@ -10,7 +10,9 @@ const IntervalSlider = ({ value, min, max, handleValueChange, handleDisplayChang
     icon={<FaIcon name="minus" color="white" size={20} />}
     onPress={() => {
       if (value <= min) return
-      handleValueChange(value - 1)
+      const newValue = value - 1
+      handleValueChange(newValue)
+      handleDisplayChange(newValue)
     }}
   />
   <Slider
@@ -34,7 +36,9 @@ const IntervalSlider = ({ value, min, max, handleValueChange, handleDisplayChang
     icon={<FaIcon name="plus" color="white" size={20} />}
     onPress={() => {
       if (value >= max) return
-      handleValueChange(value + 1)
+      const newValue = value + 1
+      handleValueChange(newValue)
+      handleDisplayChange(newValue)
     }}
   />
 </View>
