@@ -15,11 +15,13 @@ import { AsyncStorage } from 'react-native'
 import dojoReducer from './slices/DojoSlice';
 import audioReducer from './slices/AudioSlice';
 import profileReducer from './slices/ProfileSlice';
+import uiReducer from './slices/UISlice';
 
 const rootReducer = combineReducers({
   dojo: dojoReducer,
   audio: audioReducer,
   profile: profileReducer,
+  ui: uiReducer,
 })
 
 const persistConfig = {

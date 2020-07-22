@@ -12,6 +12,7 @@ import DojoStackScreen from './screens/DojoStackScreen'
 import ProfileStackScreen from './screens/ProfileStackScreen'
 import { store, persistor } from './store'
 import SCREENS from './screens/screens'
+import Overlay from './components/Overlay'
 
 export default function App() {
   const Tab = createBottomTabNavigator();
@@ -46,6 +47,7 @@ export default function App() {
             <Tab.Screen name="Profile" component={ProfileStackScreen} />
           </Tab.Navigator>
         </NavigationContainer>
+        <Overlay />
       </PersistGate>
     </Provider>
   );
