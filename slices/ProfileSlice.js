@@ -5,10 +5,9 @@ import DIFFICULTY_LEVELS from '../utils/difficulty-levels'
 
 import { BADGES, calculateNewBadgeEarned } from '../utils/badges'
 
-const initialBadgeState = {}
-Object.values(BADGES).forEach(badge => {
-  initialBadgeState[badge] = false
-})
+const initialBadgeState = {
+  ...BADGES
+}
 
 const profileInitialState = {
   achievedLevel: 0,
@@ -17,7 +16,6 @@ const profileInitialState = {
   instrumentChangeCount: 0,
   badges: initialBadgeState,
   newBadgeEarned: null,
-
 }
 
 export const profileSlice = createSlice({
@@ -30,7 +28,6 @@ export const profileSlice = createSlice({
     updateAcheivedLevel(state, action) {
       const { level } = action.payload;
 
-      console.log(level)
       state.achievedLevel = parseInt(level)      
       checkIfNewBadgeUnlocked(state)
     },
@@ -56,10 +53,12 @@ export const profileSlice = createSlice({
     },
 
     checkIfNewBadgeUnlocked(state) {
+      const { badges, newBadgeEarned } = state;
       const newBadge = calculateNewBadgeEarned(state)
+
       if (newBadge) {
-        state.badges[newBadge] = true;
-        state.newBadgeEarned = newBadge
+        badges[newBadge].isAchieved = true;
+        newBadgeEarned = newBadge
       }
     },
   },

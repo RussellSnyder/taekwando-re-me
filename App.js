@@ -22,7 +22,7 @@ export default function App() {
       <PersistGate loading={null} persistor={persistor}>
         <NavigationContainer>
           <Tab.Navigator
-            // initialRouteName={SCREENS.PROFILE}
+            initialRouteName={SCREENS.PROFILE}
             screenOptions={({ route }) => ({
               tabBarIcon: ({ focused, color, size }) => {
                 let iconName;

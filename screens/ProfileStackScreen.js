@@ -10,7 +10,7 @@ const ProfileStack = createStackNavigator();
 export default function ProfileStackScreen() {
   return (
     <ProfileStack.Navigator
-      initialRouteName={SCREENS.SETTINGS}
+      // initialRouteName={SCREENS.SETTINGS}
     >
       <ProfileStack.Screen
         name="Profile"
