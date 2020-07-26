@@ -1,8 +1,6 @@
 import React from 'react';
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
-
-import { StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
@@ -12,7 +10,8 @@ import DojoStackScreen from './screens/DojoStackScreen'
 import ProfileStackScreen from './screens/ProfileStackScreen'
 import { store, persistor } from './store'
 import SCREENS from './screens/screens'
-import Overlay from './components/Overlay'
+import BadgeOverlay from './components/BadgeOverlay'
+import ChallengeUnlockOverlay from './components/ChallengeUnlockOverlay'
 
 export default function App() {
   const Tab = createBottomTabNavigator();
@@ -22,7 +21,7 @@ export default function App() {
       <PersistGate loading={null} persistor={persistor}>
         <NavigationContainer>
           <Tab.Navigator
-            initialRouteName={SCREENS.PROFILE}
+            initialRouteName={SCREENS.DOJO_HOME}
             screenOptions={({ route }) => ({
               tabBarIcon: ({ focused, color, size }) => {
                 let iconName;
@@ -47,7 +46,8 @@ export default function App() {
             <Tab.Screen name="Profile" component={ProfileStackScreen} />
           </Tab.Navigator>
         </NavigationContainer>
-        <Overlay />
+        <BadgeOverlay />
+        <ChallengeUnlockOverlay />
       </PersistGate>
     </Provider>
   );

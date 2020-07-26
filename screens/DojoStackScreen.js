@@ -21,7 +21,7 @@ const headingButtonRight = ({ navigation }) => ({
 export default function DojoStackScreen() {
   return (
     <DojoStack.Navigator
-      initialRouteName={SCREENS.DOJO_CHALLENGES}
+      // initialRouteName={SCREENS.DOJO_CHALLENGES}
     >
       <DojoStack.Screen
         options={headingButtonRight}

@@ -9,7 +9,7 @@ const IntervalSizeChooser = ({ availableIntervalSizes, selectedIndex, handleChan
         marginHorizontal: 0,
         marginBottom: 30,
       }}
-      buttons={availableIntervalSizes.sort(((a,b) => a - b))}
+      buttons={availableIntervalSizes}
       selectedIndex={selectedIndex}
       onPress={(newValue) => {
         if (newValue === selectedIndex) return

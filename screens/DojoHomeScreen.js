@@ -12,12 +12,13 @@ const dividerStyle = {
   marginBottom: 10
 };
 
-const DojoHomeButton = ({ iconName, title, onPress }) => (
+const DojoHomeButton = ({ iconName, iconColor, title, onPress }) => (
   <Button
     icon={<FaIcon
       name={iconName}
       size={30}
       style={styles.linkIcon}
+      color={iconColor}
     />}
     iconRight
     buttonStyle={styles.button}
@@ -35,20 +36,23 @@ export default function DojoHomeScreen({ navigation }) {
     <View style={styles.container}>
       <View style={styles.navigationContainer}>
         <DojoHomeButton
-          title={"Free Play"}
+          title={"Free Play"} 
           iconName={"play"}
+          iconColor="#ff0000"
           onPress={() => navigation.navigate(SCREENS.DOJO_FREE_PLAY)}
         />
         <Divider style={dividerStyle} />
         <DojoHomeButton
           title={"Train"}
           iconName={"dumbbell"}
+          iconColor="#888888"
           onPress={() => navigation.navigate(SCREENS.DOJO_TRAININGS)}
         />
         <Divider style={dividerStyle} />
         <DojoHomeButton
           title={"Challenges"}
           iconName={"crown"}
+          iconColor="#FFCC44"
           onPress={() => navigation.navigate(SCREENS.DOJO_CHALLENGES)}
         />
       </View>

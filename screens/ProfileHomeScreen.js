@@ -28,8 +28,8 @@ export default function ProfileScreen({ navigation }) {
 
   const { instrument } = useSelector(selectInstrumentName)
 
-  const badgesObtained = Object.entries(badges).filter(([key, isAchieved]) => {
-    return isAchieved
+  const badgesObtained = Object.entries(badges).filter(([key, badge]) => {
+    return badge.isAchieved
   })
 
   return (
@@ -61,19 +61,6 @@ export default function ProfileScreen({ navigation }) {
                 </View>
               )
             })}
-            {achievedLevel < Object.keys(LEVELS).length && <Button
-              type="outline"
-              title={`Train For ${LEVELS[achievedLevel + 1].label}`}
-              onPress={() => {
-                dispatch(createTraining({
-                  level: achievedLevel + 1,
-                  instrument,
-                }))
-                navigation.navigate(SCREENS.DOJO_HOME, {
-                  screen: SCREENS.DOJO_TRAININGS,
-                })
-              }}
-            />}
           </View>
         </View>
         <View style={{ margin: 20}}/>
@@ -82,18 +69,20 @@ export default function ProfileScreen({ navigation }) {
           <View style={{ margin: 10}}/>
           <View style={styles.badgesContainer}>
             {Object.entries(badges).map(([key, {isAchieved, icon, iconColor, label}]) => {
-              console.log(iconColor)
               return (
                 <View
                   style={[styles.row, styles.badgeRow]}
                   key={key}
                 >
-                  <FaIcon
-                    name={icon}
-                    size={25}
-                    color={isAchieved ? iconColor : '#cccccc'}
-                    width={90}
-                  />
+                  <View
+                    style={{ width: 30 }}
+                  >
+                    <FaIcon
+                      name={icon}
+                      size={25}
+                      color={isAchieved ? iconColor : '#cccccc'}
+                    />
+                  </View>
                   <Text
                     h4
                     style={{
@@ -126,10 +115,10 @@ const styles = StyleSheet.create({
 
   },
   beltsSection: {
-    flex: 1,
+    // flex: 1,
     flexDirection: 'column',
     alignItems: 'stretch',
-    // justifyContent: 'space-between'
+    justifyContent: 'space-between'
   },
   row: {
     flexDirection: 'row',

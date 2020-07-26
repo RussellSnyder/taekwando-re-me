@@ -1,66 +1,97 @@
+const REP_LEVEL_1 = 50;
+const REP_LEVEL_2 = 100;
+const REP_LEVEL_3 = 200;
+
 export const BADGES = {
+  ON_THE_WAY_UP: {
+    label: "On The Way Up",
+    isAchieved: false,
+    description: 'You are going places',
+    achievedLevelToUnlock: 1,
+    icon: 'thumbs-up',
+    iconColor: "#87ceeb",
+    hasBeenDisplayedToUser: false,
+  },
   PASSED_THE_POINT_OF_NO_RETURN: {
     label: "Passed the Point of no Return",
-    isAchieved: true,
-    description: 'this badge is about blah',
+    isAchieved: false,
+    description: 'You will never be a beginner again',
+    achievedLevelToUnlock: 5,
     icon: 'trophy',
     iconColor: "#D4AF37",
+    hasBeenDisplayedToUser: false,
   },
   EAR_NINJA: {
     label: "Ear Ninja",
-    isAchieved: true,
-    description: 'this badge is about blah',
+    isAchieved: false,
+    description: 'You have all the belts in the world!  ',
+    achievedLevelToUnlock: 10,
     icon: 'user-ninja',
-    iconColor: "#000000"
+    iconColor: "#000000",
+    hasBeenDisplayedToUser: false,
   },
   MULTI_INSTRUMENTALIST: {
     label: "Multi-Instrumentalist",
-    isAchieved: true,
-    description: 'this badge is about blah',
+    isAchieved: false,
+    description: 'You have changed instruments a few times',
+    instrumentChangeCountToUnlock: 4,
     icon: 'guitar',
     iconColor: "#b74b28",
+    hasBeenDisplayedToUser: false,
   },
   CASUAL_TRAINING: {
     label: "Casual Training",
-    isAchieved: true,
-    description: 'this badge is about blah',
+    isAchieved: false,
+    description: 'Practice makes perfect!',
+    trainingReps: REP_LEVEL_1,
     icon: 'pizza-slice',
     iconColor: "#bf8d3c",
+    hasBeenDisplayedToUser: false,
   },
   TRAINING_ENTHUSIAST: {
     label: "Training Enthusiast",
-    isAchieved: true,
-    description: 'this badge is about blah',
+    isAchieved: false,
+    description: 'No Pain, no gain',
+    trainingReps: REP_LEVEL_2,
     icon: 'fist-raised',
     iconColor: "#00cc00",
+    hasBeenDisplayedToUser: false,
   },
   TRAINING_MASTER: {
     label: "Training Master",
-    isAchieved: true,
-    description: 'this badge is about blah',
+    isAchieved: false,
+    description: 'Perfect practice makes perfect',
+    trainingReps: REP_LEVEL_3,
     icon: 'medal',
     iconColor: "#7647a2",
+    hasBeenDisplayedToUser: false,
   },
   PLAYMATE: {
     label: "Playmate",
-    isAchieved: true,
-    description: 'this badge is about blah',
+    isAchieved: false,
+    description: 'You are playing...to win!',
+    playReps: REP_LEVEL_1,
     icon: 'play',
     iconColor: "#ff0000",
+    hasBeenDisplayedToUser: false,
   },
   INTERVAL_EXPLORER: {
     label: "Interval Explorer",
-    isAchieved: true,
-    description: 'this badge is about blah',
+    isAchieved: false,
+    description: 'sail the 7 C\'s',
+    playReps: REP_LEVEL_2,
     icon: 'search',
-    iconColor: "#000000",
+    iconColor: "#cccccc",
+    hasBeenDisplayedToUser: false,
   },
   SIR_PLAYS_A_LOT: {
     label: "Sir Plays A Lot",
-    isAchieved: true,
-    description: 'this badge is about blah',
+    isAchieved: false,
+    description: 'Play is the best kind of learning',
+    playReps: REP_LEVEL_3,
     icon: 'crown',
     iconColor: "#FFDF00",
+    hasBeenDisplayedToUser: false,
   },
 }
 
@@ -81,58 +112,63 @@ export const calculateNewBadgeEarned = (profile) => {
     return
   }
 
-  if (achievedLevel > 5
-    && !badges[BADGES.PASSED_THE_POINT_OF_NO_RETURN.isAchieved]
+  if (achievedLevel > BADGES.PASSED_THE_POINT_OF_NO_RETURN.achievedLevelToUnlock
+    && !badges.PASSED_THE_POINT_OF_NO_RETURN.isAchieved
   ) {
-    return BADGES.PASSED_THE_POINT_OF_NO_RETURN
+      return 'PASSED_THE_POINT_OF_NO_RETURN'
   }
 
-  if (achievedLevel === 10
-    && !badges[BADGES.EAR_NINJA.isAchieved]
+  if (achievedLevel >= BADGES.ON_THE_WAY_UP.achievedLevelToUnlock
+    && !badges.ON_THE_WAY_UP.isAchieved
   ) {
-    return BADGES.EAR_NINJA
+      return 'ON_THE_WAY_UP'
   }
 
-  if (instrumentChangeCount > 1
-    && !badges[BADGES.MULTI_INSTRUMENTALIST.isAchieved]
+  if (achievedLevel >= BADGES.EAR_NINJA.achievedLevelToUnlock
+    && !badges.EAR_NINJA.isAchieved
   ) {
-    return BADGES.MULTI_INSTRUMENTALIST
+      return 'EAR_NINJA'
   }
 
-  if (trainingReps > 50
-    && !badges[BADGES.CASUAL_TRAINING.isAchieved]
+  if (instrumentChangeCount > BADGES.MULTI_INSTRUMENTALIST.instrumentChangeCountToUnlock
+    && !badges.MULTI_INSTRUMENTALIST.isAchieved
   ) {
-    return BADGES.CASUAL_TRAINING
+      return 'MULTI_INSTRUMENTALIST'
   }
 
-  if (trainingReps > 100
-    && !badges[BADGES.TRAINING_ENTHUSIAST.isAchieved]
+  if (trainingReps > BADGES.CASUAL_TRAINING.trainingReps
+    && !badges.CASUAL_TRAINING.isAchieved
   ) {
-    return BADGES.TRAINING_ENTHUSIAST
+      return 'CASUAL_TRAINING'
   }
 
-  if (trainingReps > 200
-    && !badges[BADGES.TRAINING_MASTER.isAchieved]
+  if (trainingReps > BADGES.TRAINING_ENTHUSIAST.trainingReps
+    && !badges.TRAINING_ENTHUSIAST.isAchieved
   ) {
-    return BADGES.TRAINING_MASTER
+      return 'TRAINING_ENTHUSIAST'
   }
 
-  if (playReps > 20
-    && !badges[BADGES.PLAYMATE.isAchieved]
+  if (trainingReps > BADGES.TRAINING_MASTER.trainingReps
+    && !badges.TRAINING_MASTER.isAchieved
   ) {
-    return BADGES.PLAYMATE
+      return 'TRAINING_MASTER'
   }
 
-  if (playReps > 100
-    && !badges[BADGES.INTERVAL_EXPLORER.isAchieved]
+  if (playReps > BADGES.PLAYMATE.playReps
+    && !badges.PLAYMATE.isAchieved
   ) {
-    return BADGES.INTERVAL_EXPLORER
+      return 'PLAYMATE'
   }
 
-  if (playReps > 200
-    && !badges[BADGES.SIR_PLAYS_A_LOT.isAchieved]
+  if (playReps > BADGES.INTERVAL_EXPLORER.playReps
+    && !badges.INTERVAL_EXPLORER.isAchieved
   ) {
-    return BADGES.SIR_PLAYS_A_LOT
+      return 'INTERVAL_EXPLORER'
+  }
+
+  if (playReps > BADGES.SIR_PLAYS_A_LOT.playReps
+    && !badges.SIR_PLAYS_A_LOT.isAchieved
+  ) {
+      return 'SIR_PLAYS_A_LOT'
   }
 }
-

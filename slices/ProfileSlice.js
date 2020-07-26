@@ -1,8 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit';
-
-import { generateChallengeQuestion, generateChallengeQuestions } from '../utils/quiz-data'
-import DIFFICULTY_LEVELS from '../utils/difficulty-levels'
-
 import { BADGES, calculateNewBadgeEarned } from '../utils/badges'
 
 const initialBadgeState = {
@@ -14,9 +10,18 @@ const profileInitialState = {
   trainingReps: 0,
   playReps: 0,
   instrumentChangeCount: 0,
-  badges: initialBadgeState,
-  newBadgeEarned: null,
+  badges: {
+    ...initialBadgeState,
+  },
 }
+
+const _checkIfNewBadgeUnlocked = (state) => {
+  const newBadgeKey = calculateNewBadgeEarned(state)
+
+  if (newBadgeKey) {
+    state.badges[newBadgeKey].isAchieved = true
+  }
+};
 
 export const profileSlice = createSlice({
   name: 'profile',
@@ -29,38 +34,35 @@ export const profileSlice = createSlice({
       const { level } = action.payload;
 
       state.achievedLevel = parseInt(level)      
-      checkIfNewBadgeUnlocked(state)
+      _checkIfNewBadgeUnlocked(state)
     },
 
     incrementTrainingReps(state) {
       state.trainingReps += 1      
-      checkIfNewBadgeUnlocked(state)
+      _checkIfNewBadgeUnlocked(state)
     },
 
     incrementPlayReps(state) {
-      state.trainingReps += 1      
-      checkIfNewBadgeUnlocked(state)
+      state.playReps += 1      
+      _checkIfNewBadgeUnlocked(state)
     },
 
     incrementInstrumentChangeCount(state) {
-      state.instrumentChangeCount
-      checkIfNewBadgeUnlocked(state)
+      state.instrumentChangeCount += 1
+      _checkIfNewBadgeUnlocked(state)
     },
 
-    resetNewBadge(state) {
-      state.newBadgeEarned = null
-      checkIfNewBadgeUnlocked(state)
+    updateBadge(state, action) {
+      const { hasBeenDisplayedToUser, key } = action.payload
+
+      if (hasBeenDisplayedToUser !== undefined) {
+        state.badges[key].hasBeenDisplayedToUser = hasBeenDisplayedToUser
+      }
     },
 
     checkIfNewBadgeUnlocked(state) {
-      const { badges, newBadgeEarned } = state;
-      const newBadge = calculateNewBadgeEarned(state)
-
-      if (newBadge) {
-        badges[newBadge].isAchieved = true;
-        newBadgeEarned = newBadge
-      }
-    },
+      _checkIfNewBadgeUnlocked(state)
+    }
   },
 });
 
@@ -68,10 +70,13 @@ export const {
   updateAcheivedLevel,
   incrementTrainingReps,
   incrementPlayReps,
-  resetNewBadge,
+  incrementInstrumentChangeCount,
   checkIfNewBadgeUnlocked,
+  updateBadge
 } = profileSlice.actions;
 
 export const selectProfile = state => state.profile;
+export const selectNewBadgeEarned = state => state.profile.newBadgeEarned;
+export const selectBadges = state => state.profile.badges;
 
 export default profileSlice.reducer;

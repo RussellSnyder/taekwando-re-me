@@ -28,11 +28,13 @@ const Overlay = () => {
         bottom: 0,
         left: 0,
         right: 0,
-        backgroundColor: 'rgba(0,0,0,0.8)'
+        backgroundColor: 'rgba(0,0,0,0.9)'
       }}
     >
       <TouchableWithoutFeedback
-        onPress={() => dispatch(closeOverlay())}
+        onPress={() => {
+          dispatch(closeOverlay())
+        }}
       >
         <View style={{
           flex: 1,
@@ -50,7 +52,9 @@ const Overlay = () => {
           <View style={{ margin: 10 }}/>
           <Button
             title={closeText || "Close"}
-            onPress={() => dispatch(closeOverlay())}
+            onPress={() => {
+              dispatch(closeOverlay())
+            }}
           />
         </View>
       </TouchableWithoutFeedback>

@@ -25,8 +25,9 @@ import {
 } from '../slices/ProfileSlice'
 
 import {
-  updateOverLay,
+  updateChallengeUnlockOverlay,
 } from '../slices/UISlice'
+
 import LEVEL_DATA from '../utils/difficulty-levels';
 
 export default function DojoChallengeCompleteScreen({ navigation }) {
@@ -56,19 +57,16 @@ export default function DojoChallengeCompleteScreen({ navigation }) {
 
   const hasPassedChallenge = score === 1;
 
-
   if (hasPassedChallenge && level > achievedLevel) {
-    console.log('yup', level)
+    if (level > 0 && achievedLevel < Object.keys(LEVEL_DATA).length) {
+      dispatch(updateChallengeUnlockOverlay({
+        isOpen: true,
+        levelUnlocked: parseInt(level) + 1
+      }))
+    }
     dispatch(updateAcheivedLevel({
       level
     }))
-    if (level < Object.keys(LEVEL_DATA).length) {
-      setTimeout(() => {
-        dispatch(updateOverLay({
-          message: `You unlocked the ${LEVEL_DATA[parseInt(level) + 1].label} Challenge!`
-        }))
-      }, 1500)
-    }
   }
 
   const resultMessage = hasPassedChallenge

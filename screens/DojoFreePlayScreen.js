@@ -18,6 +18,10 @@ import {
   selectInstrumentSounds,
 } from '../slices/AudioSlice'
 
+import {
+  incrementPlayReps,
+} from '../slices/ProfileSlice'
+
 import { range } from 'lodash';
 
 const INTERVAL_DIRECTIONS = ['ascending', 'descending']
@@ -84,6 +88,7 @@ export default function DojoFreePlayScreen({ navigation }) {
         isSequence
       }))
       setNotes(notes)
+      dispatch(incrementPlayReps())
     } catch {
       console.error('audio playback hardcore fail')
     }
@@ -95,7 +100,7 @@ export default function DojoFreePlayScreen({ navigation }) {
         notes,
         isSequence
       }))
-
+      dispatch(incrementPlayReps())
     } catch {
       console.error('audio playback hardcore fail')
     }

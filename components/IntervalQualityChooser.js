@@ -10,10 +10,7 @@ const IntervalQualityChooser = ({ availableIntervalQualities, selectedIndex, han
         marginHorizontal: 0,
         marginBottom: 45,
       }}
-      buttons={availableIntervalQualities
-        ? INTERVAL_QUALITIES.filter(quality => availableIntervalQualities.indexOf(quality) !== -1)
-        : INTERVAL_QUALITIES
-      }
+      buttons={availableIntervalQualities || INTERVAL_QUALITIES}
       selectedIndex={selectedIndex}
       onPress={(newValue) => {
         if (newValue === selectedIndex) return

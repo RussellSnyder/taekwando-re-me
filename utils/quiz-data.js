@@ -30,6 +30,7 @@ export const generateChallengeQuestion = (level, instrument = "violin") => {
     notes,
     isSequence: Math.random() < sequenceRate,
     answeredCorrectly: null,
+    answer: null,
     playCount: 0,
   }
 };

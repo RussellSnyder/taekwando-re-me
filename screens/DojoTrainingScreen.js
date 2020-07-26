@@ -25,6 +25,10 @@ import {
   selectInstrumentName,
 } from '../slices/AudioSlice'
 
+import {
+  incrementTrainingReps,
+} from '../slices/ProfileSlice'
+
 const MAX_SIZE_OF_SIZE_CHOOSER = 5
 
 export default function DojoTrainingScreen({ navigation }) {
@@ -105,6 +109,7 @@ export default function DojoTrainingScreen({ navigation }) {
       console.error('audio playback hardcore fail')
     }
     setHasAudioBeenPlayed(true)
+    dispatch(incrementTrainingReps())
   }
 
   // TODO allow user to reset score

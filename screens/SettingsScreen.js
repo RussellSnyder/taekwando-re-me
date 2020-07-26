@@ -10,6 +10,10 @@ import {
   selectInstrumentName,
 } from '../slices/AudioSlice'
 
+import {
+  incrementInstrumentChangeCount,
+} from '../slices/ProfileSlice'
+
 import INSTRUMENTS from '../utils/instruments'
 
 const InstrumentPicker = ({ instrument, handleInstrumentChange }) => {
@@ -31,7 +35,6 @@ const InstrumentPicker = ({ instrument, handleInstrumentChange }) => {
     }}
     value={instrument}
     onValueChange={(value) => {
-      console.log(value)
       handleInstrumentChange(value);
     }}
     placeholder={{}}
@@ -43,30 +46,40 @@ const InstrumentPicker = ({ instrument, handleInstrumentChange }) => {
   />
 }
 
-export default function ProfileScreen() {
+export default function SettingScreen() {
   const dispatch = useDispatch()
   const currentInstrument = useSelector(selectInstrumentName)
-
+  
   return (
     <View style={styles.container}>
       <View style={styles.settings}>
         <View style={styles.item}>
           <Text h4>Instrument</Text>
+          <View style={{ margin: 4 }} />
           <InstrumentPicker
             instrument={currentInstrument}
             handleInstrumentChange={(instrument) => {
               dispatch(updateInstrument({
                 instrument: instrument
               }));
+              dispatch(incrementInstrumentChangeCount());
             }}
           />
         </View>
         <View style={styles.item}>
+          <Text h4>Languages</Text>
+          <View style={{ margin: 4 }} />
+          <Text>COMING SOON!</Text>
+        </View>
+        <View style={styles.item}>
           <Text h4>About</Text>
+          <View style={{ margin: 4 }} />
           <Text>
             This App was made with React Native by Russell Snyder
             {"\n"}
-            Need a developer for a music app? Hit me up :-)
+            Need some help on a music app?
+            {"\n"}
+            Shoot me an email: russellevansnyder@gmail.com 
           </Text>
         </View>
       </View>
@@ -90,6 +103,6 @@ const styles = StyleSheet.create({
     // justifyContent: 'space-evenly'
   },
   item: {
-    marginBottom: 20,
+    marginBottom: 25,
   }
 });

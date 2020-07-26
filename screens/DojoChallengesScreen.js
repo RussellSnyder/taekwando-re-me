@@ -44,7 +44,6 @@ export default function DojoChallengeScreen({ navigation }) {
         <View style={styles.levelContainer}>
           {Object.entries(LEVELS).map(([key, {label, backgroundColor, textColor }]) => {
             return <View style={styles.row}>
-              {console.log(key, parseInt(achievedLevel) + 1)}
               {key > achievedLevel + 1 && <Button
                 type="clear"
                 containerStyle={{

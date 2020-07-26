@@ -8,6 +8,8 @@ import {
   getDataForNumericalInterval,
 } from '../utils/intervals'
 
+import { INTERVAL_QUALITIES } from '../utils/intervals'
+
 import { decomposeIntervalData } from '../utils/difficulty-levels'
 import SCREENS from './screens'
 import LEVELS from '../utils/difficulty-levels'
@@ -55,12 +57,15 @@ const DojoChallengeScreen = ({ navigation }) => {
   const currentQuestion = questions[currentQuestionIndex]
 
   const {
-    availableIntervalQualities,
-    availableIntervalSizes,
+    availableIntervalQualities: intervalQualities,
+    availableIntervalSizes: intervalSizes,
     minimumIntervalSize,
     maximumIntervalSize,
     numberOfQuestions,
   } = decomposeIntervalData(level)
+
+  const availableIntervalQualities = INTERVAL_QUALITIES.filter(quality => intervalQualities.indexOf(quality) !== -1)
+  const availableIntervalSizes = intervalSizes.sort(((a,b) => a - b))
 
   const [intervalSizeGuess, setIntervalSizeGuess] = useState(minimumIntervalSize)
   const [intervalSizeIndexGuess, setIntervalSizeIndexGuess] = useState(0)
@@ -97,6 +102,7 @@ const DojoChallengeScreen = ({ navigation }) => {
     dispatch(updateChallengeQuestion({
       id: currentQuestionIndex,
       answeredCorrectly: isCorrect,
+      answer: guessIntervalSymbol,
     }))
 
     if (isLastQuestion) {
