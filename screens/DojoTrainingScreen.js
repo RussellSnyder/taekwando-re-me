@@ -8,7 +8,7 @@ import {
   getDataForNumericalInterval,
 } from '../utils/intervals'
 
-import { decomposeIntervalData } from '../utils/difficulty-levels'
+import LEVEL_DATA, { decomposeIntervalData } from '../utils/difficulty-levels'
 
 import IntervalSizeSlider from '../components/IntervalSizeSlider'
 import IntervalQualityChooser from '../components/IntervalQualityChooser'
@@ -112,12 +112,58 @@ export default function DojoTrainingScreen({ navigation }) {
     dispatch(incrementTrainingReps())
   }
 
-  // TODO allow user to reset score
+  const Description = () => {
+    const { intervals, rangeSize, sequenceRate } = LEVEL_DATA[level]
+
+    const intervalsPossible = intervals.map(interval => (
+      getDataForNumericalInterval(Math.abs(interval)).names[0]
+    ))
+
+    const uniqueIntervalsPossible = Array.from(new Set(intervalsPossible))
+
+    return (
+      <View>
+        <Text>
+          Intervals: {uniqueIntervalsPossible.join(", ")}
+        </Text>
+        <View style={{ margin: 2}} />
+        <Text>
+          Range: {Math.round(rangeSize * 100)}% of instrument
+        </Text>
+        <View style={{ margin: 2}} />
+        <Text>
+          Chance of Sequence: {Math.round(sequenceRate * 100)}%
+        </Text>
+        <View style={{ margin: 10}} />
+      </View>
+    )
+  }
+
+
   const score = Math.round((questionsAnsweredCorrectly / questionCount) * 100);
+
+  const isReady = (score > 90) && (questionCount >= LEVEL_DATA[level].numberOfQuestions)
+
+  const Ready = () => (
+    <View>
+      <Text h4 style={{ color: "green", textAlign: 'center' }}>
+        <FaIcon
+          size={35}
+          name="check-circle"
+        />&nbsp;
+        You Are Ready!
+      </Text>
+    </View>
+  )
 
   return (
     <View style={styles.container}>
-      <Text h3 style={styles.challengeName}>{name}</Text>
+      {isReady 
+        ? <Ready />
+        : <Text h4 style={styles.challengeName}>{LEVEL_DATA[level].label} Training</Text>
+      }
+      <View style={{ margin: 10}} />      
+      <Description />
       <View style={styles.playSequenceContainer}>
         <Button
           titleStyle={{ fontSize: 30 }}
@@ -157,15 +203,22 @@ export default function DojoTrainingScreen({ navigation }) {
       {isUsingIntervalSlider && (
         <Text h4 style={{ textAlign: 'center' }}>{intervalSizeGuessDisplay}</Text>
       )}
+      <View style={styles.feedback}>
+        {(feedback && !audioIsPlaying) && (
+          <Text h4 style={{ 
+            color: feedback.correct ? 'green' : 'red',
+            fontWeight: 'bold',
+          }}>
+            {feedback.text}
+          </Text>
+        )}
+      </View>
 
-      <View style={styles.feedbackAndPlayCount}>
-        <View style={styles.stats}>
-          {questionCount > 0 && <Text>Interval Count: {questionCount}, Score: %{score}</Text>}
-          {(feedback && !audioIsPlaying) && (
-            <Text style={{ color: feedback.correct ? 'green' : 'red' }}>{feedback.text}</Text>
-          )}
+      <View style={styles.stats}>
+        <View>
+          {questionCount > 0 && <Text>Score: {score}% out of {questionCount} tries</Text>}
         </View>
-        {questionCount > 0 && <View style={styles.clearStats}>
+        {questionCount > 0 && <View>
           <Button
             type="clear"
             title="reset"
@@ -209,16 +262,14 @@ const styles = StyleSheet.create({
   playSequenceContainer: {
     marginBottom: 30
   },
-  feedbackAndPlayCount: {
-    height: 25,
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between'
+  feedback: {
+    height: 70,
   },
   stats: {
-
-  },
-  clearStats: {
-
+    height: 35,
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center'
   },
 });

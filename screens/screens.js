@@ -1,5 +1,5 @@
 export default {
-  DOJO_FREE_PLAY: 'Free Play',
+  DOJO_FREE_PLAY: 'Learn',
   DOJO_CHALLENGES: 'Select Challenge',
   DOJO_CHALLENGE: 'Challenge!',
   DOJO_CHALLENGE_COMPLETE: "Challenge Complete!",

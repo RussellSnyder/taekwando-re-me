@@ -84,9 +84,13 @@ const DojoChallengeScreen = ({ navigation }) => {
   const guessedIntervalQuality = availableIntervalQualities[intervalQualityIndexGuess]
   const guessIntervalSymbol = `${guessedIntervalQuality}${guessedIntervalSize}`;
 
+  console.log(questions)
   const submitGuess = () => {
     const isCorrect = guessIntervalSymbol === correctData.symbols[0] 
     
+    console.log({isCorrect})
+    console.log(guessIntervalSymbol, correctData.symbols[0])
+
     if (isCorrect) {
       setFeedback({
         correct: true,
@@ -177,14 +181,24 @@ const DojoChallengeScreen = ({ navigation }) => {
       {isUsingIntervalSlider && (
         <Text h4 style={{ textAlign: 'center' }}>{intervalSizeGuessDisplay}</Text>
       )}
+      <View style={styles.feedback}>
+        {(feedback && !audioIsPlaying && currentQuestion.playCount < 1) && (
+          <Text h4 style={{ 
+            color: feedback.correct ? 'green' : 'red',
+            fontWeight: 'bold',
+          }}>
+            {feedback.text}
+          </Text>
+        )}
+      </View>
 
-      <View style={styles.feedbackAndPlayCount}>
+      <View style={styles.stats}>
         {(currentQuestion.playCount > 0) && (
           <Text>Sound Played {currentQuestion.playCount} times</Text>
         )}
-        {(feedback && !audioIsPlaying && currentQuestion.playCount < 1) && (
+        {/* {(feedback && !audioIsPlaying && currentQuestion.playCount < 1) && (
           <Text style={{ color: feedback.correct ? 'green' : 'red' }}>{feedback.text}</Text>
-        )}
+        )} */}
       </View>
       <Button
         onPress={() => submitGuess()}
@@ -217,10 +231,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between'
   },
+  feedback: {
+    height: 70,
+  },
   playSequenceContainer: {
     marginVertical: 30
   },
-  feedbackAndPlayCount: {
+  stats: {
     height: 20
   }
 });

@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "ear-training",
-    "slug": "ear-training",
+    "name": "taekwando-re-me",
+    "slug": "taekwando-re-me",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -21,6 +21,8 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "description": "a small app for learning musical intervals",
+    "githubUrl": "https://github.com/RussellSnyder/taekwando-re-me"
   }
 }

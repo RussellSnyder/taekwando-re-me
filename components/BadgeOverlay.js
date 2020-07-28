@@ -41,8 +41,6 @@ const BadgeOverlay = () => {
 
   const { label, description, icon, iconColor } = badgesToDisplay[1]
 
-
-
   return (
     <View 
       style={{
@@ -73,6 +71,14 @@ const BadgeOverlay = () => {
           padding: 50,
         }}>
           <Text
+            h3
+            style={{
+              textAlign: 'center',
+              color: 'white',
+            }}
+          >You earned a badge!</Text>
+          <View style={{ margin: 15 }}/>
+          <Text
             h2
             style={{
               textAlign: 'center',
@@ -96,7 +102,7 @@ const BadgeOverlay = () => {
               color: 'white'
             }}
           >{description}</Text>
-          <View style={{ margin: 10 }}/>
+          <View style={{ margin: 20 }}/>
           <Button
             title={"Nnnnnnice!"}
             onPress={() => {

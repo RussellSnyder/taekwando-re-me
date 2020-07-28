@@ -21,7 +21,7 @@ export default function App() {
       <PersistGate loading={null} persistor={persistor}>
         <NavigationContainer>
           <Tab.Navigator
-            initialRouteName={SCREENS.DOJO_HOME}
+            // initialRouteName={SCREENS.PROFILE}
             screenOptions={({ route }) => ({
               tabBarIcon: ({ focused, color, size }) => {
                 let iconName;

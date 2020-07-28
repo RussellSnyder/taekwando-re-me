@@ -106,6 +106,8 @@ export default function DojoFreePlayScreen({ navigation }) {
     }
   }
 
+  console.log(notes, interval, lastIntervalPlayed, '\n')
+
   return (
     <View style={styles.container}>
         <CheckBox
@@ -129,19 +131,6 @@ export default function DojoFreePlayScreen({ navigation }) {
           setIntervalDirectionIndex(newValue)
         }}
       />}
-      {/* <ButtonGroup
-        containerStyle={{
-          marginHorizontal: 0,
-          marginBottom: 45,
-        }}
-        buttons={INTERVAL_RANGE}
-        selectedIndex={intervalRangeIndex}
-        onPress={(newValue) => {
-          if (newValue === intervalRangeIndex) return
-          setIntervalRangeIndex(newValue)
-        }}
-      /> */}
-
       <View style={styles.guessControlsContainer}>
         <IntervalQualityChooser
           selectedIndex={intervalQualityIndex}
@@ -154,20 +143,20 @@ export default function DojoFreePlayScreen({ navigation }) {
         />
       </View>
       <View style={styles.playSequenceContainer}>
-        <Button
+        {(!audioIsPlaying && lastIntervalPlayed && lastIntervalPlayed === interval) && <Button
           titleStyle={{ fontSize: 30 }}
-          icon={<FaIcon name="volume-up" size={30} style={{ marginRight: 10 }} />}
+          icon={<FaIcon name="redo" size={30} style={{ marginRight: 10 }} />}
           type="outline"
           buttonStyle={{
             height: 100,
           }}
           onPress={handleRepeatInterval}
           disabled={audioIsPlaying || !notes || interval !== lastIntervalPlayed}
-          title={audioIsPlaying ? "Playing..." : `Repeat same ${lastIntervalPlayed || interval}`}
-         />
+          title={audioIsPlaying ? "Playing..." : 'Play Again'}
+         />}
         <Button
           titleStyle={{ fontSize: 30 }}
-          icon={<FaIcon name="redo" size={30} style={{ marginRight: 10 }} />}
+          icon={<FaIcon name="volume-up" size={30} style={{ marginRight: 10 }} />}
           type="outline"
           buttonStyle={{
             height: 100,
@@ -200,6 +189,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between'
   },
   playSequenceContainer: {
+    height: 180,
     marginBottom: 30
   },
   feedbackAndPlayCount: {

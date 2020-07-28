@@ -74,13 +74,11 @@ export default function SettingScreen() {
         <View style={styles.item}>
           <Text h4>About</Text>
           <View style={{ margin: 4 }} />
-          <Text>
-            This App was made with React Native by Russell Snyder
-            {"\n"}
-            Need some help on a music app?
-            {"\n"}
-            Shoot me an email: russellevansnyder@gmail.com 
-          </Text>
+          <Text>This App was made with React Native by Russell Snyder</Text>
+          <View style={{ margin: 2 }} />
+          <Text>See an issue or need some help with your own music app?</Text>
+          <View style={{ margin: 2 }} />
+          <Text>Shoot me an email: russellevansnyder@gmail.com </Text>
         </View>
       </View>
     </View>

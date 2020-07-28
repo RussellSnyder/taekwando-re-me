@@ -55,7 +55,7 @@ export default function DojoChallengeCompleteScreen({ navigation }) {
     return answeredCorrectly ? acc + 1 : acc
   }, 0) / questionCount
 
-  const hasPassedChallenge = score === 1;
+  const hasPassedChallenge = score >= 0.9;
 
   if (hasPassedChallenge && level > achievedLevel) {
     if (level > 0 && achievedLevel < Object.keys(LEVEL_DATA).length) {
@@ -77,20 +77,23 @@ export default function DojoChallengeCompleteScreen({ navigation }) {
     ? <FaIcon style={{ color: 'green' }} name={"check-circle"} size={50}/>
     : <FaIcon style={{ color: 'red' }} name={"times-circle"} size={50}/>
 
-
-  const resultRows = Object.entries(questions).map(([key, {interval, isSquence, answeredCorrectly, playCount}]) => {
+  const resultRows = Object.entries(questions).map(([key, {interval, isSequence, answeredCorrectly, playCount}]) => {
+    // console.log(interval, isSequence, answeredCorrectly, playCount)
     return <View key={`result-${key}`} style={styles.row}>
       <View style={[styles.col, styles.colId]}>
         <Text>{parseInt(key) + 1}</Text>
       </View>
       <View style={styles.col}>
-        <Text>{answeredCorrectly ? 'Yup' : 'Nope'}</Text>
+        <Text>{answeredCorrectly
+          ? <FaIcon name="check-circle" color="green" size={20} />
+          : <FaIcon name="times-circle" color="red" size={20} />
+        }</Text>
       </View>
       <View style={styles.col}>
         <Text>{translateNumericalIntervalToNamedInterval(Math.abs(interval))}</Text>
       </View>
       <View style={styles.col}>
-        <Text>{isSquence ? 'Sequence' : 'Chord'}</Text>
+        <Text>{isSequence ? 'Sequence' : 'Chord'}</Text>
       </View>
       <View style={styles.col}>
         <Text>{playCount}</Text>
@@ -224,10 +227,10 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
   },
   colId: {
-    width: 10,
+    width: 20,
   },
   col: {
-    width: 60,
+    width: 65,
     margin: 10,
     alignSelf: 'stretch'    
   },

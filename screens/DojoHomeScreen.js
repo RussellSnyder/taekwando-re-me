@@ -36,7 +36,7 @@ export default function DojoHomeScreen({ navigation }) {
     <View style={styles.container}>
       <View style={styles.navigationContainer}>
         <DojoHomeButton
-          title={"Free Play"} 
+          title={"Learn"} 
           iconName={"play"}
           iconColor="#ff0000"
           onPress={() => navigation.navigate(SCREENS.DOJO_FREE_PLAY)}
@@ -50,7 +50,7 @@ export default function DojoHomeScreen({ navigation }) {
         />
         <Divider style={dividerStyle} />
         <DojoHomeButton
-          title={"Challenges"}
+          title={"Challenge"}
           iconName={"crown"}
           iconColor="#FFCC44"
           onPress={() => navigation.navigate(SCREENS.DOJO_CHALLENGES)}
